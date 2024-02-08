@@ -1,9 +1,11 @@
 import *  as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import {toast} from 'sonner'
 
 export const AddNoteCard = () => {
     const [showOnboarding, setShowOnboarding] = useState(true)
+    const [content, setContent] = useState('')
 
     const handleStartEditor = () => {
         setShowOnboarding(false)
@@ -13,6 +15,12 @@ export const AddNoteCard = () => {
         if (value === '') {
             setShowOnboarding(true)
         }
+        setContent(value)
+    }
+    const handleSaveNote = (event : FormEvent) => {
+       event.preventDefault()
+       console.log(content)
+       toast.success('Nota criada com sucesso!')
     }
     return (
         <Dialog.Root>
@@ -26,16 +34,18 @@ export const AddNoteCard = () => {
                     <Dialog.DialogClose className='absolute right-0 top-0 bg-slate-800 p-1.5 text-slate-400 hover:text-slate-100'>
                         <X className='size-5' />
                     </Dialog.DialogClose>
-                    <div className='flex flex-1 flex-col gap-3 p-5'>
-                        <span className='text-sm font-medium text-slate-300'>
-                            Adicionar Nota
-                        </span>
-                        {showOnboarding ? (<p className='text-sm leading-6 text-slate-400'>
-                            Começe <button className='text-lime-500 hover:underline'>gravando uma nota</button> em aúdio ou <button className='text-lime-500 hover:underline' onClick={handleStartEditor}>apenas texto</button>.
-                        </p>) : <textarea onChange={handleResetEditor} autoFocus className='flex-1 text-sm outline-none bg-transparent text-slate-400 resize-none leading-6' />}
-                    </div>
-                    <button type='button'
-                        className='w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500'>Salvar Nota</button>
+                    <form onSubmit={handleSaveNote} className='flex-1 flex flex-col'>
+                        <div className='flex flex-1 flex-col gap-3 p-5'>
+                            <span className='text-sm font-medium text-slate-300'>
+                                Adicionar Nota
+                            </span>
+                            {showOnboarding ? (<p className='text-sm leading-6 text-slate-400'>
+                                Começe <button className='text-lime-500 hover:underline'>gravando uma nota</button> em aúdio ou <button className='text-lime-500 hover:underline' onClick={handleStartEditor}>apenas texto</button>.
+                            </p>) : <textarea onChange={handleResetEditor} autoFocus className='flex-1 text-sm outline-none bg-transparent text-slate-400 resize-none leading-6' />}
+                        </div>
+                        <button type='submit'
+                            className='w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500'>Salvar Nota</button>
+                    </form>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>
