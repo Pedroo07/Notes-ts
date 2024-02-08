@@ -1,7 +1,19 @@
 import *  as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
+import { ChangeEvent, useState } from 'react'
 
 export const AddNoteCard = () => {
+    const [showOnboarding, setShowOnboarding] = useState(true)
+
+    const handleStartEditor = () => {
+        setShowOnboarding(false)
+    }
+    const handleResetEditor = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        let value = event.target.value
+        if (value === '') {
+            setShowOnboarding(true)
+        }
+    }
     return (
         <Dialog.Root>
             <Dialog.Trigger className='rounded-md bg-slate-700 p-5 flex flex-col  text-left gap-3 overflow-hidden'>
@@ -18,9 +30,9 @@ export const AddNoteCard = () => {
                         <span className='text-sm font-medium text-slate-300'>
                             Adicionar Nota
                         </span>
-                        <p className='text-sm leading-6 text-slate-400'>
-                            Começe <button className='text-lime-500 hover:underline'>gravando uma nota</button> em aúdio ou <button className='text-lime-500 hover:underline'>apenas texto</button>.
-                        </p>
+                        {showOnboarding ? (<p className='text-sm leading-6 text-slate-400'>
+                            Começe <button className='text-lime-500 hover:underline'>gravando uma nota</button> em aúdio ou <button className='text-lime-500 hover:underline' onClick={handleStartEditor}>apenas texto</button>.
+                        </p>) : <textarea onChange={handleResetEditor} autoFocus className='flex-1 text-sm outline-none bg-transparent text-slate-400 resize-none leading-6' />}
                     </div>
                     <button type='button'
                         className='w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500'>Salvar Nota</button>
