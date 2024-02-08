@@ -4,17 +4,20 @@ import { ptBR } from 'date-fns/locale'
 import { X } from 'lucide-react'
 
 type Props = {
-    date: Date
-    content: string
+    note :{
+        id: number
+        date: Date
+        content: string
+    }
+   
 }
 
-
-export const NoteCard = (props: Props) => {
+export const NoteCard = ({note}: Props) => {
     return (
         <Dialog.Root>
             <Dialog.Trigger className='rounded-md text-left flex flex-col outline-none bg-slate-800 p-5 gap-y-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400'>
-                <span className='text-sm font-medium text-slate-300'>{formatDistanceToNow(props.date, { locale: ptBR, addSuffix: true })}</span>
-                <p className='text-sm leading-6 text-slate-400'>{props.content}</p>
+                <span className='text-sm font-medium text-slate-300'>{formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}</span>
+                <p className='text-sm leading-6 text-slate-400'>{note.content}</p>
                 <div className='absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-black/0 pointer-events-none' />
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -25,11 +28,11 @@ export const NoteCard = (props: Props) => {
                     </Dialog.DialogClose>
                     <div className='flex flex-1 flex-col gap-3 p-5'>
                         <span className='text-sm font-medium text-slate-300'>
-                            {formatDistanceToNow(props.date, { locale: ptBR, addSuffix: true })}
+                            {formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}
                         </span>
 
                         <p className='text-sm leading-6 text-slate-400'>
-                            {props.content}
+                            {note.content}
                         </p>
                     </div>
                     <button type='button'

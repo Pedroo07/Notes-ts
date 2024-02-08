@@ -2,8 +2,10 @@ import *  as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import {toast} from 'sonner'
-
-export const AddNoteCard = () => {
+type OnNoteCreated = {
+    onNoteCreated : (content:string) => void
+}
+export const AddNoteCard = ({onNoteCreated}: OnNoteCreated) => {
     const [showOnboarding, setShowOnboarding] = useState(true)
     const [content, setContent] = useState('')
 
@@ -19,7 +21,7 @@ export const AddNoteCard = () => {
     }
     const handleSaveNote = (event : FormEvent) => {
        event.preventDefault()
-       console.log(content)
+       onNoteCreated(content)
        toast.success('Nota criada com sucesso!')
     }
     return (
