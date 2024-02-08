@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Logo from './assets/Logo.svg'
 import { AddNoteCard } from './components/AddNoteCard'
 import { NoteCard } from './components/NoteCard'
@@ -8,6 +8,7 @@ type Note = {
   content: string
 }
 export const App = () => {
+  const [search, setSearch] = useState('')
   const [notes, SetNotes] = useState<Note[]>(() => {
     const notesOnStorage = localStorage.getItem('notes')
 
@@ -27,6 +28,16 @@ export const App = () => {
 
     localStorage.setItem('notes' , JSON.stringify(notesArray))
   }
+  
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    let value = event.target.value
+
+    setSearch(value)
+    console.log(search)
+
+  }
+  const filteredNotes = search !== '' ? notes.filter(notes => notes.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())) : notes
+
   return (
     <div className="mx-auto max-w-6xl my-12 space-y-6">
       <img src={Logo} alt="Logo Nlw" />
@@ -34,12 +45,14 @@ export const App = () => {
         <input
           className='w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-slate-500'
           type="text"
-          placeholder='Busque em suas notas...' />
+          placeholder='Busque em suas notas...' 
+          onChange={handleSearch}
+          />
       </form>
       <div className='h-px bg-slate-700' />
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
         <AddNoteCard onNoteCreated={onNoteCreated} />
-        {notes.map(note => {
+        {filteredNotes.map(note => {
           return <NoteCard key={note.id} note={note} />
         })}
       </div>
