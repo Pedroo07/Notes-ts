@@ -5,7 +5,7 @@ import { X } from 'lucide-react'
 
 type Props = {
     note :{
-        id: number
+        id: string
         date: Date
         content: string
     }

@@ -2,14 +2,16 @@ import { useState } from 'react'
 import Logo from './assets/Logo.svg'
 import { AddNoteCard } from './components/AddNoteCard'
 import { NoteCard } from './components/NoteCard'
-
+type Note = {
+  id: string,
+  date:Date,
+  content: string
+}
 export const App = () => {
-  const [notes, SetNotes] = useState([
-    { id: 1, date: new Date(), content: 'Hello World' },
-  ])
+  const [notes, SetNotes] = useState<Note[]>([])
   const onNoteCreated = (content : string) => {
     let newNote = {
-      id: Math.random(),
+      id: crypto.randomUUID(),
       date: new Date(),
       content
     }

@@ -21,7 +21,13 @@ export const AddNoteCard = ({onNoteCreated}: OnNoteCreated) => {
     }
     const handleSaveNote = (event : FormEvent) => {
        event.preventDefault()
+
        onNoteCreated(content)
+
+       setContent('')
+       
+       setShowOnboarding(true)
+
        toast.success('Nota criada com sucesso!')
     }
     return (
