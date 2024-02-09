@@ -36,6 +36,14 @@ export const App = () => {
     console.log(search)
 
   }
+  const handleDeleteNotes = (id: string) => {
+    const notesArray = notes.filter(note => {
+      return note.id !== id
+    })
+    SetNotes(notesArray)
+
+    localStorage.setItem('notes' , JSON.stringify(notesArray))
+  }
   const filteredNotes = search !== '' ? notes.filter(notes => notes.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())) : notes
 
   return (
@@ -53,7 +61,7 @@ export const App = () => {
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
         <AddNoteCard onNoteCreated={onNoteCreated} />
         {filteredNotes.map(note => {
-          return <NoteCard key={note.id} note={note} />
+          return <NoteCard key={note.id} note={note} onDeleteNote={handleDeleteNotes} />
         })}
       </div>
     </div>

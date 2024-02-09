@@ -9,10 +9,10 @@ type Props = {
         date: Date
         content: string
     }
-   
+   onDeleteNote : (id: string) => void
 }
 
-export const NoteCard = ({note}: Props) => {
+export const NoteCard = ({note, onDeleteNote}: Props) => {
     return (
         <Dialog.Root>
             <Dialog.Trigger className='rounded-md text-left flex flex-col outline-none bg-slate-800 p-5 gap-y-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400'>
@@ -37,7 +37,7 @@ export const NoteCard = ({note}: Props) => {
                     </div>
                     <button type='button'
                         className='w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium'>
-                        Deseja <span className='text-red-500  hover:underline'>apagar essa nota</span>?
+                        Deseja <span className='text-red-500  hover:underline' onClick={() => onDeleteNote(note.id)}>apagar essa nota</span>?
                     </button>
                 </Dialog.Content>
             </Dialog.Portal>
