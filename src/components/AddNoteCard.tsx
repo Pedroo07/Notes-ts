@@ -5,11 +5,13 @@ import { toast } from 'sonner'
 type OnNoteCreated = {
     onNoteCreated: (content: string) => void
 }
+let speechRecognition : SpeechRecognition | null = null
+
 export const AddNoteCard = ({ onNoteCreated }: OnNoteCreated) => {
     const [showOnboarding, setShowOnboarding] = useState(true)
     const [content, setContent] = useState('')
     const [record, setRecord] = useState(false)
-
+    
     const handleStartEditor = () => {
         setShowOnboarding(false)
     }
@@ -35,10 +37,10 @@ export const AddNoteCard = ({ onNoteCreated }: OnNoteCreated) => {
         toast.success('Nota criada com sucesso!')
     }
     const handleOnRecording = () => {
-    
-        const isSpeechRecognitionAPIAvailable = 'SpeechRecognition' in  window || 'webkitSpeechRecognition' in window
 
-        if (!isSpeechRecognitionAPIAvailable) { 
+        const isSpeechRecognitionAPIAvailable = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window
+
+        if (!isSpeechRecognitionAPIAvailable) {
             alert('Infelizmente seu navegador não suporta essa gravação')
             return
         }
@@ -47,7 +49,7 @@ export const AddNoteCard = ({ onNoteCreated }: OnNoteCreated) => {
 
         const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition
 
-        const speechRecognition = new SpeechRecognitionAPI()
+        speechRecognition = new SpeechRecognitionAPI()
 
         speechRecognition.lang = 'pt-BR'
         speechRecognition.continuous = true
@@ -65,6 +67,9 @@ export const AddNoteCard = ({ onNoteCreated }: OnNoteCreated) => {
     }
     const handleStopRecord = () => {
         setRecord(false)
+        if (speechRecognition !== null) {
+            speechRecognition.stop()
+        }
     }
     return (
         <Dialog.Root>
